@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Monitor body -->
+  <rect x="1" y="2" width="30" height="22" rx="1" fill="#111111" stroke="#000000" stroke-width="1.5"/>
+
+  <!-- Screen bezel (inner frame) -->
+  <rect x="3" y="4" width="26" height="17" rx="0.5" fill="#0a0a0a"/>
+
+  <!-- CRT screen glow (green phosphor) -->
+  <rect x="4" y="5" width="24" height="15" fill="#001a00"/>
+
+  <!-- Scanlines effect - subtle horizontal lines -->
+  <rect x="4" y="6" width="24" height="1" fill="#003300" opacity="0.6"/>
+  <rect x="4" y="8" width="24" height="1" fill="#003300" opacity="0.6"/>
+  <rect x="4" y="10" width="24" height="1" fill="#003300" opacity="0.6"/>
+  <rect x="4" y="12" width="24" height="1" fill="#003300" opacity="0.6"/>
+  <rect x="4" y="14" width="24" height="1" fill="#003300" opacity="0.6"/>
+  <rect x="4" y="16" width="24" height="1" fill="#003300" opacity="0.6"/>
+  <rect x="4" y="18" width="24" height="1" fill="#003300" opacity="0.6"/>
+
+  <!-- Prompt symbol > -->
+  <rect x="5" y="7" width="2" height="2" fill="#00ff41"/>
+  <rect x="6" y="8" width="2" height="2" fill="#00ff41"/>
+  <rect x="5" y="9" width="2" height="2" fill="#00ff41"/>
+
+  <!-- Text lines (green) -->
+  <rect x="10" y="7" width="9" height="2" fill="#00cc33"/>
+  <rect x="10" y="11" width="14" height="2" fill="#00cc33"/>
+  <rect x="10" y="15" width="6" height="2" fill="#00cc33"/>
+
+  <!-- Cursor block (bright green) -->
+  <rect x="20" y="15" width="3" height="2" fill="#00ff41"/>
+
+  <!-- Power LED -->
+  <rect x="26" y="21" width="2" height="1" fill="#00ff41" rx="0.5"/>
+
+  <!-- Monitor neck -->
+  <rect x="14" y="24" width="4" height="3" fill="#111111"/>
+
+  <!-- Monitor base -->
+  <rect x="10" y="27" width="12" height="3" rx="1" fill="#111111" stroke="#000000" stroke-width="0.5"/>
+</svg>
