@@ -19,6 +19,7 @@
 /test-results/
 /blob-report/
 /playwright/.cache/
+/.playwright-mcp
 
 # storybook
 /storybook-static/
@@ -49,3 +50,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/docs
+/.claude

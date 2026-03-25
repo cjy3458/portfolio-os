@@ -18,7 +18,8 @@ const skills = [
 
 const introduces = [
   {
-    title: "문제를 빠르게 진단하고 개선하여, 서비스에 실질적인 성과를 만듭니다.",
+    title:
+      "문제를 빠르게 진단하고 개선하여, 서비스에 실질적인 성과를 만듭니다.",
     body: "사용자 행동 데이터와 피드백을 기반으로 문제를 정의합니다.\n가설을 세우고 실험하여, 개선 후 초기 이탈률을 30% → 18%로 감소시켰습니다.",
   },
   {
@@ -58,7 +59,9 @@ export default function ProfileApp() {
             {introduces.map((item) => (
               <div key={item.title}>
                 <p className="font-bold text-sm">{item.title}</p>
-                <p className="text-xs text-gray-600 whitespace-pre-wrap mt-1">{item.body}</p>
+                <p className="text-xs text-gray-600 whitespace-pre-wrap mt-1">
+                  {item.body}
+                </p>
               </div>
             ))}
           </div>

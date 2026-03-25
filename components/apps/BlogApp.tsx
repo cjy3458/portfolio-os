@@ -25,7 +25,11 @@ let persistedHasMore: boolean = true;
 function formatDate(raw: string): string {
   const d = new Date(raw);
   if (isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString("ko-KR", { year: "numeric", month: "short", day: "numeric" });
+  return d.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export default function BlogApp() {
@@ -33,15 +37,23 @@ export default function BlogApp() {
   const [offset, setOffset] = useState(persistedOffset);
   const [hasMore, setHasMore] = useState(persistedHasMore);
   const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(persistedPosts.length === 0);
+  const [initialLoading, setInitialLoading] = useState(
+    persistedPosts.length === 0,
+  );
   const [error, setError] = useState<string | null>(null);
   const openBrowser = useOsStore((s) => s.openBrowser);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isFetchingRef = useRef(false);
 
-  useEffect(() => { persistedPosts = posts; }, [posts]);
-  useEffect(() => { persistedOffset = offset; }, [offset]);
-  useEffect(() => { persistedHasMore = hasMore; }, [hasMore]);
+  useEffect(() => {
+    persistedPosts = posts;
+  }, [posts]);
+  useEffect(() => {
+    persistedOffset = offset;
+  }, [offset]);
+  useEffect(() => {
+    persistedHasMore = hasMore;
+  }, [hasMore]);
 
   const fetchPage = useCallback(async (pageOffset: number, replace = false) => {
     if (isFetchingRef.current) return;
@@ -49,7 +61,8 @@ export default function BlogApp() {
 
     if (postCache.has(pageOffset)) {
       const cached = postCache.get(pageOffset)!;
-      const newHasMore = cachedTotal == null || pageOffset + PAGE_SIZE < cachedTotal;
+      const newHasMore =
+        cachedTotal == null || pageOffset + PAGE_SIZE < cachedTotal;
       if (replace) {
         setPosts(cached);
       } else {
@@ -69,7 +82,9 @@ export default function BlogApp() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/blog?offset=${pageOffset}&limit=${PAGE_SIZE}`);
+      const res = await fetch(
+        `/api/blog?offset=${pageOffset}&limit=${PAGE_SIZE}`,
+      );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -83,7 +98,10 @@ export default function BlogApp() {
       } else {
         setPosts((prev) => {
           const seen = new Set(prev.map((p) => p.link));
-          return [...prev, ...newPosts.filter((p: BlogPost) => !seen.has(p.link))];
+          return [
+            ...prev,
+            ...newPosts.filter((p: BlogPost) => !seen.has(p.link)),
+          ];
         });
       }
       setOffset(pageOffset + PAGE_SIZE);
@@ -109,7 +127,7 @@ export default function BlogApp() {
           fetchPage(offset);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
@@ -136,7 +154,10 @@ export default function BlogApp() {
         title="cjy3458.tistory.com"
         action={
           <OsButton size="icon" onClick={handleRefresh} title="새로고침">
-            <RefreshCw size={14} className={initialLoading ? "animate-spin" : ""} />
+            <RefreshCw
+              size={14}
+              className={initialLoading ? "animate-spin" : ""}
+            />
           </OsButton>
         }
       />
@@ -168,7 +189,9 @@ export default function BlogApp() {
                     {post.description}
                   </p>
                 )}
-                <p className="text-xs text-gray-400 font-bold">{formatDate(post.pubDate)}</p>
+                <p className="text-xs text-gray-400 font-bold">
+                  {formatDate(post.pubDate)}
+                </p>
               </div>
               <div className="shrink-0 w-20 h-16 border-2 border-black overflow-hidden bg-gray-100 flex items-center justify-center">
                 {post.image ? (
