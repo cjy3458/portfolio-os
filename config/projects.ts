@@ -41,8 +41,7 @@ export const PROJECTS: ProjectData[] = [
       "Window CRUD REST API (NestJS): Promise.all 병렬 처리 + zIndex 서버 자동 할당 + SSE broadcast 연동",
     ],
     images: [
-      "/projects/web-os-1.svg",
-      // "/projects/web-os-2.svg",
+      "/projects/web-os/web-os-1.png",
     ],
     contributions: [
       {
@@ -98,7 +97,7 @@ export const PROJECTS: ProjectData[] = [
     features: [
       "Sentry → n8n → Gemini AI → Notion 파이프라인으로 에러 원인 파악 시간 2시간 → 5분 단축",
       "Vite Vendor Chunk 분리 + lazy loading으로 Lighthouse 77 → 92점, FCP 50%·LCP 55% 개선",
-      "공통 컴포넌트·DTO 타입 독립 패키지 설계로 Web/Mobile 멀티 플랫폼 운영 비용 절감",
+      "Memoization·비제어 컴포넌트·상태관리 최적화로 렌더 커밋 73회 → 3회(95.9%), AppLayout 리렌더링 18ms → 3.4ms(81%) 감소",
       "Mixpanel 도입으로 수치 기반 이벤트 지표 시각화 및 라운드 총 시간 데이터 확보",
     ],
     contributions: [
@@ -114,33 +113,43 @@ export const PROJECTS: ProjectData[] = [
       {
         title: "Vite 빌드 최적화: Vendor Chunk 분리를 통한 초기 로드 시간 개선",
         problem:
-          "프로젝트 규모가 커지며 외부 라이브러리가 포함된 Vendor Chunk 파일이 비대해졌습니다. 앱 코드만 변경돼도 라이브러리 포함 전체 파일을 다시 다운로드해야 해서 재방문 사용자의 로딩 성능이 낮았습니다.",
+          "프로젝트 규모가 커짐에 따라 외부 라이브러리가 포함된 Vendor Chunk 파일의 크기가 비대해졌습니다. 단일 파일 크기가 커서 브라우저의 초기 로딩 속도(LCP, FCP)가 저하됐습니다. 앱 코드만 변경되고 라이브러리는 그대로인 경우에도 모든 파일을 다시 다운로드해야 했습니다.",
         solution:
-          "라이브러리를 기준으로 Vendor Chunk를 분할하고, 초기 페이지에서 필요 없는 코드를 lazy loading으로 스플리팅했습니다.",
+          "라이브러리를 기준으로 Vendor Chunk를 분할하고, 초기 페이지에서 필요 없는 코드를 lazy loading으로 코드 스플리팅했습니다.",
         result:
-          "초기 로드 번들 사이즈 10% 감소, 재방문(캐시) 기준 번들 사이즈 70% 감소. Lighthouse 성능 77 → 92점, FCP 1.4초 → 0.7초(50%), LCP 2.0초 → 0.9초(55%) 개선.",
+          "초기 로드 번들 사이즈 10% 감소, 재방문(캐시) 기준 로드 번들 사이즈 70% 감소. Lighthouse 성능 점수 77 → 92점(15점 향상), FCP 1.4초 → 0.7초(50% 개선), LCP 2.0초 → 0.9초(55% 개선).",
       },
       {
-        title:
-          "멀티 플랫폼(Web/Mobile) 공통 인터페이스 및 컴포넌트 패키지 설계",
+        title: "Memoization·비제어 컴포넌트·상태관리 최적화를 통한 렌더링 성능 개선",
         problem:
-          "웹 게임 프로젝트의 모바일 버전 확장 시 웹·모바일 간 중복 코드 발생 및 유지보수 효율 저하가 우려됐습니다. 클라이언트-서버 간 데이터 통신 시 서로 다른 환경에서 동일한 DTO 타입을 보장하기도 어려웠습니다.",
+          "채팅 메시지 수신 시 구독 위치 문제로 PlayerListSection 등 무관한 컴포넌트까지 리렌더링이 발생했습니다. 채팅 입력 시 글자 입력마다 컴포넌트 트리 전체가 리렌더링되어 한 세션 73회 렌더 커밋이 발생했습니다. 토스트 알림 발생 시 AppLayout 리렌더링이 정적 자식 컴포넌트에 불필요하게 전파됐습니다.",
         solution:
-          "프로젝트 전반에서 공통으로 사용되는 컴포넌트·DTO 타입·상수를 독립적인 오픈소스 패키지로 분리 설계했습니다. 모노레포 및 외부 패키지에서도 즉시 사용 가능한 구조로 구현했습니다.",
+          "Zustand 구독을 실제 데이터 사용 컴포넌트 내부로 이동하고, 소켓 이벤트 핸들러에서는 getState()로 구독 없이 스토어에 직접 접근했습니다. useState → useRef 기반 비제어 컴포넌트로 전환해 타이핑 중 React 렌더링 사이클에서 완전히 분리했습니다. props 변화가 없는 정적 컴포넌트에 React.memo를 적용해 부모 리렌더링 전파를 차단했습니다.",
         result:
-          "버전 관리를 통한 협력된 업데이트로 멀티 플랫폼 운영 비용을 절감했습니다. 공유 DTO 타입으로 클라이언트-서버 간 통신 신뢰도를 높였습니다.",
+          "채팅 입력 중 같은 글자 수 입력 상황에서 렌더 커밋 73회 → 3회로 95.9% 감소했습니다. AppLayout 리렌더링 비용 18ms → 3.4ms로 81% 감소했습니다.",
       },
       {
         title: "Mixpanel 기반 이벤트 모니터링 도입",
         problem:
-          "Sentry 커스텀 데이터가 모두 String 타입으로 저장돼 평균·비율 등 수치 기반 지표 계산이 불가능했습니다. 사용자 행동 데이터와 에러 데이터가 혼재해 목적별 분석이 어려웠습니다.",
+          "Sentry 커스텀 데이터가 모두 String 타입으로 저장되어 평균(avg)·비율 등 수치 기반 지표 계산이 불가능했습니다. 사용자 행동 데이터를 에러 로그와 함께 관리하면서 가독성이 저하되고 목적별 분석이 어려웠습니다.",
         solution:
-          "이벤트 기반 분석 도구인 Mixpanel을 도입했습니다. 사용자 행동을 이벤트와 속성 구조로 체계적으로 수집하고, 평균·분포·전환율 등 통계 지표를 시각화했습니다.",
+          "이벤트 기반 분석 도구인 Mixpanel을 도입했습니다. 사용자 행동을 이벤트와 속성 구조로 체계적으로 수집하고, 수치형 데이터 기반 평균·분포·전환율 등 통계 지표를 시각화했습니다.",
         result:
-          "라운드 시간별 드로핑 비율의 평균을 측정해 라운드 총 시간 설정을 변경했습니다. 에러 추적과 사용자 분석 도메인을 분리해 관리 효율이 향상됐습니다.",
+          "사용자들의 라운드 시간별 드로잉 시간 비율의 평균을 측정하여 라운드 총 시간 설정을 변경했습니다. 에러 추적과 사용자 분석 도메인을 분리하여 관리 효율이 향상됐습니다.",
       },
     ],
-    links: [{ label: "GitHub", href: "https://github.com/cjy3458" }],
+    images: [
+      "/projects/davinci/2-lobby.gif",
+      "/projects/davinci/3-show.gif",
+      "/projects/davinci/4-draw.gif",
+      "/projects/davinci/5-replay.gif",
+      "/projects/davinci/6-score.gif",
+      "/projects/davinci/7-result.gif",
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/boostcampwm2025/web04-we-are-all-da-Vinci" },
+      { label: "서비스 링크", href: "https://wlldv.art/" },
+    ],
   },
   {
     id: "arti",
@@ -159,24 +168,30 @@ export const PROJECTS: ProjectData[] = [
       {
         title: "이미지 최적화 및 SEO 개선을 위한 React → Next.js 마이그레이션",
         problem:
-          "다수의 고해상도 이미지로 인해 초기 렌더링 속도가 느리고 사용자 이탈이 발생했습니다. CSR 기반 React 플랫폼이라 검색 로봇의 크롤링이 낮아 Lighthouse SEO가 60점대에 머물렀습니다.",
+          "다수의 고해상도 의상 이미지로 인해 초기 렌더링 속도가 느려지고 사용자 이탈이 발생했습니다. CSR 기반의 React 환경에서 검색 로봇의 크롤링 효율이 낮아 Lighthouse SEO가 65점이었습니다.",
         solution:
-          "처음 접한 Next.js를 2주 이내에 익혀 SSR 라우팅을 구축했습니다. 페이지별 메타데이터를 작성해 검색엔진 노출을 최적화하고, Next/Image를 활용해 자동 이미지 최적화를 적용했습니다.",
+          "처음 접한 Next.js를 2주 안에 익혀 마이그레이션을 진행해 SSR 기반 HTML 렌더링으로 전환했습니다. 페이지별 metadata API로 OG 태그·키워드를 직접 설정하고, Next/Image + priority 속성으로 뷰포트 이미지 LCP를 직접 제어하며 자동 WebP 변환 및 압축을 적용했습니다.",
         result:
-          "Lighthouse LCP·FCP 35% 개선, SEO 96점 달성. 검색 노출 증가로 신규 유입 경로를 확보했습니다.",
+          "Lighthouse LCP·FCP 35% 개선, SEO 96점으로 개선됐습니다.",
       },
       {
         title:
           "파트 간 협업 시너지 창출 및 프로젝트 가시성 확보를 위한 프로세스 개선 주도",
         problem:
-          "각 파트가 유기적으로 연결되어 있음에도 서로의 실제 진행 상황을 파악하기 어려웠습니다. 테스크 Due-date가 다가올 때 팀원들의 완성도를 객관적으로 확인·관리할 기준이 없었습니다.",
+          "각 파트가 유기적으로 연결되어 있음에도 불구하고 서로의 상세 진행 상황을 파악하기 어려웠습니다. 테스크 Due date가 다가옴에 따라 완성도를 객관적으로 측정하고 관리할 수 있는 명확한 기준이 없었습니다.",
         solution:
-          "매일 정해진 시간에 모든 파트가 모여 오늘 한 일과 다음 날 목표를 공유하는 문화를 제안했습니다. 구현 완성도를 매일 공유함으로써 프로젝트의 불확실성을 수치화해 제거했습니다.",
+          "매일 정해진 시간에 모든 파트가 모여 오늘 한 일과 다음 날 목표를 공유하는 문화를 제안했습니다. 기한 대비 현재 맡은 테스크의 실질적인 구현 완성도를 매일 공유함으로써 프로젝트의 불확실성을 제거했습니다.",
         result:
-          "비효율적인 중복 확인 과정이 감소하고, 모든 팀원이 동일한 목표 지점과 타임라인을 공유하게 됐습니다. 마감 기한 내 높은 퀄리티로 프로젝트를 완수했습니다.",
+          "비효율적인 중복 확인 과정이 감소하고, 모든 팀원이 동일한 목표 지점과 타임라인을 공유하며 작업 효율이 향상됐습니다. 매일 공유되는 완성도 지표를 통해 테스크 분배가 용이해지고 마감 기한 내 높은 퀄리티로 프로젝트를 완수했습니다.",
       },
     ],
-    links: [{ label: "GitHub", href: "https://github.com/cjy3458" }],
+    images: [
+      "/projects/arti/image 540.png",
+      "/projects/arti/image 541.png",
+      "/projects/arti/image 542.png",
+      "/projects/arti/image 543.png",
+    ],
+    links: [{ label: "GitHub", href: "https://github.com/orgs/Lucy-Arti/repositories" }],
   },
   {
     id: "cau-likelion-wiki",
@@ -185,36 +200,38 @@ export const PROJECTS: ProjectData[] = [
     stack: ["Next.js", "TypeScript", "Recoil", "Emotion", "TanStack Query"],
     desc: "중앙대학교 멋쟁이사자처럼 학회의 오프더레코드 멋사위키. PO 1명, FE 4명, BE 4명.",
     fullDesc:
-      "중앙대학교 멋쟁이사자처럼 학회 전용 오프더레코드 위키 서비스입니다. TanStack Query 커스텀 훅 설계로 불필요한 API 호출을 제거하고, 공식 API가 공개되지 않은 Markdown Editor 라이브러리의 내부 구조를 직접 분석·수정하여 기획 요구사항을 100% 충족시켰습니다.",
+      "중앙대학교 멋쟁이사자처럼 학회 전용 오프더레코드 위키 서비스입니다. TanStack Query 커스텀 훅 설계로 불필요한 API 호출을 제거하고, 반응형 레이아웃과 PWA 전환으로 모바일 사용자 비중 60% 이상인 환경에 맞춘 UX를 제공했습니다.",
     features: [
-      "TanStack Query 커스텀 훅 + staleTime 60초로 중복 API 요청 차단 및 서버 비용 최적화",
-      "Markdown Editor 라이브러리 소스 분석 후 내부 직접 수정으로 미공개 기능 구현",
-      "외부 라이브러리 한계 극복으로 기획 요구사항 100% 충족 및 교체 비용 절감",
+      "TanStack Query queryKey 중심 재설계로 동일 조건 요청 캐시 재사용, 불필요한 네트워크 트래픽 제거",
+      "반응형 레이아웃(@media) 적용 및 PWA 전환으로 모바일 60% 이상 사용자 접근성 개선",
     ],
     contributions: [
       {
         title: "TanStack Query 기반 커스텀 훅 설계를 통한 데이터 패칭 최적화",
         problem:
-          "메인 페이지가 렌더링될 때마다 메뉴 API를 호출하여 불필요한 네트워크 트래픽이 발생했습니다. UI 컴포넌트 안에 비동기 데이터 로직이 혼재해 재사용성도 낮았습니다.",
+          "메인 페이지가 리렌더링될 때마다 매번 API를 호출하여 불필요한 네트워크 트래픽이 발생했습니다. 동일 조건 요청의 중복 호출과 불필요한 리페치로 인해 응답 지연 및 클라이언트 처리 비용이 증가했습니다.",
         solution:
-          "커스텀 훅을 설계해 UI 컴포넌트와 비동기 데이터 로직을 완벽히 분리하고 재사용성을 극대화했습니다. staleTime을 1분(60초)으로 설정해 Fresh 상태일 때는 캐싱된 값을 반환하여 불필요한 중복 요청을 차단했습니다.",
+          "TanStack Query를 도입해 데이터 요청 단위를 queryKey 중심으로 재설계했습니다. 입력값 기준으로 키를 분리해 동일 조건 요청은 캐시 재사용이 가능하도록 구성했습니다.",
         result:
-          "여러 번 목록을 조회해도 추가 네트워크 요청 없이 캐시를 활용하여 응답 속도와 서버 비용을 최적화했습니다. API 호출 로직이 Custom hook으로 분리돼 향후 캐시 정책 변경 시 단일 지점에서 대응 가능한 구조를 갖췄습니다.",
+          "여러 번 목록을 조회하더라도 추가 네트워크 요청 없이 캐시를 활용하므로 응답 속도 및 서버 비용이 최적화됐습니다. API 호출 로직을 Custom hook으로 관리하여 향후 기능 수정이나 캐시 정책 변경 시 대응이 용이한 구조를 구축했습니다.",
       },
       {
-        title:
-          "사용자 경험 향상을 위한 Markdown Editor 라이브러리 내부 구조 개선",
+        title: "모바일/앱 유사 UX 강화",
         problem:
-          "react-md-editor를 사용하는 중 기본 제공 툴바 위에 기능 추가를 요청받았습니다. 라이브러리가 툴바의 특정 동작을 수정할 공식 API를 공개하지 않아 추가가 불가능한 상황이었습니다.",
+          "구글폼 설문을 통해 모바일에서 접속하는 비율이 응답 기준 60% 이상인 것을 확인했습니다. 기존 웹 화면이 모바일 환경에서 레이아웃이 깨지거나 이용 흐름이 끊겨 접근성이 저하되는 UX 문제가 발생했습니다.",
         solution:
-          "node_modules에 설치된 라이브러리의 소스 코드를 직접 분석해 툴바 내부 상태 관리 메커니즘을 파악했습니다. 라이브러리 내부 코드를 직접 수정해 기획 요구사항에 맞는 커스텀 툴바와 기능을 구현했습니다.",
+          "모바일·태블릿·데스크톱 구간을 기준으로 @media 기반 반응형 레이아웃을 적용했습니다. 웹앱을 PWA로 전환해 설치형 앱 유사 UX를 제공했습니다.",
         result:
-          "외부 라이브러리의 한계에 갇히지 않고 기획자가 의도한 마크다운 편집 환경을 구축했습니다. 라이브러리 교체 비용을 절감하고 기존 환경을 유지하면서 요구사항에 적극 대응해 개발 속도가 향상됐습니다.",
+          "설치형 PWA 기반으로 브라우저 진입 부담을 줄이고 앱처럼 빠르게 접근 가능한 사용자 경험을 확보했습니다. 모바일 사용성(가독성·탭 동선·화면 안정성)을 개선하여 실제 사용 비중에 맞춘 UX를 제공했습니다.",
       },
     ],
+    images: [
+      "/projects/wiki/wiki-1.png",
+      "/projects/wiki/wiki-2.png",
+    ],
     links: [
-      { label: "GitHub", href: "https://github.com/cjy3458" },
-      { label: "서비스 링크", href: "https://cjy3458.tistory.com/" },
+      { label: "GitHub", href: "https://github.com/cau-likelion-org/kiwi-client" },
+      { label: "서비스 링크", href: "https://wiki.cau-likelion.org/" },
     ],
   },
 ];

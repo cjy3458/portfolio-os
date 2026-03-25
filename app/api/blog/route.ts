@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 import { BlogPost } from "@/types";
 
 const BLOG_BASE = "https://cjy3458.tistory.com";
@@ -120,7 +121,7 @@ async function fetchAllPostMeta(): Promise<Omit<BlogPost, "image">[]> {
   // 1단계: RSS로 최신 포스트 빠르게 수집
   try {
     const rssRes = await fetch(`${BLOG_BASE}/rss`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 432000 },
     });
     if (rssRes.ok) {
       for (const p of parseRSS(await rssRes.text())) {
@@ -143,7 +144,7 @@ async function fetchAllPostMeta(): Promise<Omit<BlogPost, "image">[]> {
         const url = page === 1 ? `${BLOG_BASE}/` : `${BLOG_BASE}/?page=${page}`;
         try {
           const res = await fetch(url, {
-            next: { revalidate: 3600 },
+            next: { revalidate: 432000 },
             headers: { "User-Agent": "Mozilla/5.0 (compatible; portfolio-bot/1.0)" },
           });
           return res.ok ? scrapeListingPage(await res.text()) : [];
@@ -175,7 +176,7 @@ async function fetchAllPostMeta(): Promise<Omit<BlogPost, "image">[]> {
 async function fetchOgImage(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 432000 },
       headers: { "User-Agent": "Mozilla/5.0 (compatible; portfolio-bot/1.0)" },
     });
     if (!res.ok) return null;
@@ -189,6 +190,12 @@ async function fetchOgImage(url: string): Promise<string | null> {
   }
 }
 
+const getCachedPostMeta = unstable_cache(
+  fetchAllPostMeta,
+  ["blog-post-meta"],
+  { revalidate: 432000 }
+);
+
 // ── Route Handler ─────────────────────────────────────────────────────────────
 export async function GET(request: Request) {
   try {
@@ -196,7 +203,7 @@ export async function GET(request: Request) {
     const offset = Math.max(0, parseInt(searchParams.get("offset") ?? "0", 10));
     const limit = Math.min(20, Math.max(1, parseInt(searchParams.get("limit") ?? "5", 10)));
 
-    const allRaw = await fetchAllPostMeta();
+    const allRaw = await getCachedPostMeta();
     const total = allRaw.length;
     const slice = allRaw.slice(offset, offset + limit);
 
