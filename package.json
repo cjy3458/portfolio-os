@@ -13,7 +13,10 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test:storybook": "playwright test --config=playwright.storybook.config.ts",
-    "test:storybook:ui": "playwright test --config=playwright.storybook.config.ts --ui"
+    "test:storybook:ui": "playwright test --config=playwright.storybook.config.ts --ui",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "lucide-react": "^0.575.0",
@@ -35,15 +38,20 @@
     "@storybook/test": "^8.6.18",
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.7.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "jsdom": "^29.0.1",
     "storybook": "^8.6.18",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vite": "^5.4.21"
+    "vite": "^5.4.21",
+    "vitest": "^4.1.2"
   }
 }

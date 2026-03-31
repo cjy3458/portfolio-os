@@ -1,0 +1,75 @@
+name: CI/CD
+
+# 언제 이 워크플로우를 실행할지 정의
+on:
+  push:
+    branches: [main] # main 브랜치에 코드를 push했을 때
+  pull_request:
+    branches: [main] # main 브랜치로 PR을 열었을 때
+
+jobs:
+  # ─────────────────────────────────────────
+  # Job 1: CI (코드 품질 검증)
+  # ─────────────────────────────────────────
+  ci:
+    name: Lint · Test · Build
+    runs-on: ubuntu-latest # 가상 머신 OS: Ubuntu 최신 버전
+
+    steps:
+      # 1단계: 저장소 코드를 가상 머신으로 다운로드
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2단계: Node.js 환경 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # 사용할 Node.js 버전
+          cache: "npm" # node_modules 캐시 → 다음 실행부터 설치 속도 빨라짐
+
+      # 3단계: package-lock.json 기준으로 패키지 정확히 설치
+      # npm ci는 lock 파일을 그대로 재현 → 로컬과 동일한 환경 보장
+      - name: Install dependencies
+        run: npm ci
+
+      # 4단계: ESLint로 코드 스타일/오류 검사
+      # 규칙에 어긋난 코드가 있으면 여기서 실패 → 이후 단계 전체 차단
+      - name: Lint
+        run: npm run lint
+
+      # 5단계: Vitest로 유닛 테스트 실행
+      # 테스트가 하나라도 실패하면 이후 단계(Build, Deploy)는 실행되지 않음
+      - name: Unit Test
+        run: npm test
+
+      # 6단계: Next.js 프로덕션 빌드
+      # 타입 오류, 잘못된 import 등을 배포 전에 잡아냄
+      - name: Build
+        run: npm run build
+
+  # # ─────────────────────────────────────────
+  # # Job 2: CD (Vercel 배포)
+  # # ─────────────────────────────────────────
+  # deploy:
+  #   name: Deploy to Vercel
+  #   runs-on: ubuntu-latest
+  #   needs: ci                  # ci job이 성공해야만 이 job 실행됨
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   # ↑ main 브랜치 push일 때만 배포 (PR은 배포 안 함)
+
+  #   steps:
+  #     # 저장소 코드 다운로드
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     # Vercel CLI 설치
+  #     - name: Install Vercel CLI
+  #       run: npm install -g vercel
+
+  #     # Vercel에 프로덕션 배포
+  #     # GitHub Secrets에 등록한 값을 환경변수로 주입
+  #     - name: Deploy to Vercel
+  #       run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+  #       env:
+  #         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  #         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
