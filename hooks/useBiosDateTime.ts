@@ -13,6 +13,7 @@ export function useBiosDateTime() {
       const ss = String(d.getSeconds()).padStart(2, "0");
       return `${yy}/${mm}/${dd} ${hh}:${mi}:${ss}`;
     };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDateTime(fmt(new Date()));
     const interval = setInterval(() => setDateTime(fmt(new Date())), 1000);
     return () => clearInterval(interval);

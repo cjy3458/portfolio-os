@@ -8,7 +8,6 @@ const NextImage = ({
   height,
   className,
   style,
-  ...rest
 }: {
   src: string | { src: string };
   alt?: string;
@@ -16,7 +15,6 @@ const NextImage = ({
   height?: number;
   className?: string;
   style?: React.CSSProperties;
-  [key: string]: unknown;
 }) => {
   const resolvedSrc = typeof src === "string" ? src : src?.src ?? "";
   return (

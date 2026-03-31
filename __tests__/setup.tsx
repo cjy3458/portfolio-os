@@ -5,15 +5,16 @@ import { vi } from "vitest";
 vi.mock("next/image", () => ({
   __esModule: true,
   default: (props: Record<string, unknown>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { fill: _fill, priority: _priority, unoptimized: _unoptimized, ...rest } = props;
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-    const { fill, priority, unoptimized, ...rest } = props;
     return <img {...rest} />;
   },
 }));
 
 // ── next/cache 모킹 ──
 vi.mock("next/cache", () => ({
-  unstable_cache: (fn: Function) => fn,
+  unstable_cache: (fn: (...args: unknown[]) => unknown) => fn,
 }));
 
 // ── IntersectionObserver stub ──

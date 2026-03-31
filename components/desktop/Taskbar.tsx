@@ -22,6 +22,8 @@ export default function Taskbar() {
   const [timeStr, setTimeStr] = useState<string | null>(null);
 
   useEffect(() => {
+    // SSR hydration을 위해 null 초기값 사용 → 클라이언트에서만 시간 설정
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTimeStr(formatTime());
     const timer = setInterval(() => setTimeStr(formatTime()), 1000);
     return () => clearInterval(timer);

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Terminal, FileText, Briefcase, Phone } from "lucide-react";
-import { fn, userEvent, within, expect } from "@storybook/test";
+import { userEvent, within, expect } from "@storybook/test";
 import { useOsStore } from "@/store/osStore";
 import DesktopIcon from "@/components/desktop/DesktopIcon";
 import type { AppConfig } from "@/types";
