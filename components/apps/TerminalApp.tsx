@@ -43,7 +43,11 @@ export default function TerminalApp() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { role: "system", text: "PORTFOLIO_OS v1.0.0", id: 0 },
-    { role: "system", text: "AI 어시스턴트에 연결되었습니다. 포트폴리오에 대해 질문해보세요.", id: 1 },
+    {
+      role: "system",
+      text: "AI 어시스턴트 연결 포트폴리오에 대해 질문해보세요.",
+      id: 1,
+    },
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
