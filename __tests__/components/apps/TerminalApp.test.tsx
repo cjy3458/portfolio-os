@@ -15,7 +15,7 @@ describe("TerminalApp", () => {
     render(<TerminalApp />);
     expect(screen.getByText("PORTFOLIO_OS v1.0.0")).toBeInTheDocument();
     expect(
-      screen.getByText("AI 어시스턴트에 연결되었습니다. 포트폴리오에 대해 질문해보세요.")
+      screen.getByText("AI 어시스턴트 연결 포트폴리오에 대해 질문해보세요.")
     ).toBeInTheDocument();
   });
 

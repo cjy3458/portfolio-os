@@ -42,7 +42,4 @@ describe("OsButton", () => {
     expect(screen.getByRole("button")).toHaveClass("custom-class");
   });
 
-  it("[CI 실패 테스트] 의도적으로 실패시키는 테스트", () => {
-    expect(true).toBe(false); // CI 차단 확인용 — 검증 후 삭제 예정
-  });
 });
