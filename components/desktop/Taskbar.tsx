@@ -46,7 +46,7 @@ export default function Taskbar() {
           className={`h-full px-4 border-2 border-black font-black flex items-center gap-2 uppercase text-sm shrink-0 ${
             startMenuOpen
               ? "bg-black text-white shadow-inner"
-              : "bg-white hover:bg-gray-100 shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:translate-y-px hover:shadow-[1px_1px_0px_rgba(0,0,0,1)] transition-all"
+              : "bg-white hover:bg-gray-100 shadow-button hover:translate-y-px hover:shadow-[1px_1px_0px_rgba(0,0,0,1)] transition-all"
           }`}
         >
           <Menu size={18} />
@@ -65,7 +65,7 @@ export default function Taskbar() {
               className={`h-full px-3 sm:px-4 border-2 border-black flex items-center gap-2 text-xs sm:text-sm font-bold truncate max-w-37.5 sm:max-w-xs transition-all shrink-0 ${
                 focusedWindowId === win.id
                   ? "bg-gray-200 shadow-inner translate-y-px"
-                  : "bg-white hover:bg-gray-50 shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                  : "bg-white hover:bg-gray-50 shadow-button"
               }`}
             >
               <app.icon size={14} className="shrink-0" />

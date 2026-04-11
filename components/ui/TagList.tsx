@@ -14,7 +14,7 @@ export default function TagList({ items, layout = "wrap" }: TagListProps) {
       {items.map((item) => (
         <span
           key={item}
-          className="border-2 border-black px-2 py-1 text-xs font-bold uppercase bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+          className="border-2 border-black px-2 py-1 text-xs font-bold uppercase bg-white shadow-button"
         >
           {item}
         </span>

@@ -12,7 +12,7 @@ interface OsCardProps {
  */
 export default function OsCard({ onClick, className = "", children }: OsCardProps) {
   const cls =
-    `border-2 border-black p-3 shadow-[3px_3px_0px_rgba(0,0,0,1)] ` +
+    `border-2 border-black p-3 shadow-card ` +
     (onClick
       ? "hover:shadow-none hover:translate-y-0.5 transition-all group cursor-pointer "
       : "") +

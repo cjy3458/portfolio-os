@@ -14,6 +14,8 @@
     "build-storybook": "storybook build",
     "test:storybook": "playwright test --config=playwright.storybook.config.ts",
     "test:storybook:ui": "playwright test --config=playwright.storybook.config.ts --ui",
+    "test:visual": "playwright test --config=playwright.storybook.config.ts visual-regression",
+    "test:visual:update": "playwright test --config=playwright.storybook.config.ts visual-regression --update-snapshots",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

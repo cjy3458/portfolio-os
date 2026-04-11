@@ -11,7 +11,7 @@ export default function ErrorBox({ message, onRetry }: ErrorBoxProps) {
       {onRetry && (
         <button
           onClick={onRetry}
-          className="mt-3 border-2 border-black px-3 py-1 text-xs font-bold hover:bg-black hover:text-white transition-colors shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-0.5"
+          className="mt-3 border-2 border-black px-3 py-1 text-xs font-bold hover:bg-black hover:text-white transition-colors shadow-button hover:shadow-none hover:translate-y-0.5"
         >
           재시도
         </button>

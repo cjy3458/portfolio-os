@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-green-terminal: #33FF00;
+  --shadow-button: 2px 2px 0px #000000;
+  --shadow-card: 3px 3px 0px #000000;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -55,7 +61,7 @@ body {
   width: 8px;
 }
 .terminal-scrollbar::-webkit-scrollbar-thumb {
-  background: #33ff00;
+  background: var(--color-green-terminal);
 }
 .terminal-scrollbar::-webkit-scrollbar-track {
   background: #000;

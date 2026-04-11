@@ -9,7 +9,7 @@ const sizeClass: Record<Size, string> = {
 };
 
 const BASE =
-  "inline-flex items-center gap-2 border-2 border-black font-bold hover:bg-black hover:text-white transition-colors shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-0.5";
+  "inline-flex items-center gap-2 border-2 border-black font-bold hover:bg-black hover:text-white transition-colors shadow-button hover:shadow-none hover:translate-y-0.5";
 
 interface Shared {
   size?: Size;

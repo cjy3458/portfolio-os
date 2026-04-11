@@ -30,7 +30,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
             <button
               key={src}
               onClick={() => setLightboxIndex(idx)}
-              className={`relative aspect-video border-2 border-black overflow-hidden shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-0.5 transition-all ${
+              className={`relative aspect-video border-2 border-black overflow-hidden shadow-card hover:shadow-none hover:translate-y-0.5 transition-all ${
                 images.length % 2 !== 0 && idx === images.length - 1
                   ? "col-span-2"
                   : ""

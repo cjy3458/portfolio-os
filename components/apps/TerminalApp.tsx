@@ -106,7 +106,7 @@ export default function TerminalApp() {
 
   return (
     <div
-      className="bg-black text-[#33ff00] p-4 font-mono h-full flex flex-col text-sm"
+      className="bg-black text-green-terminal p-4 font-mono h-full flex flex-col text-sm"
       onClick={() => inputRef.current?.focus()}
     >
       <div className="flex-1 overflow-y-auto pb-4 terminal-scrollbar">
@@ -133,7 +133,7 @@ export default function TerminalApp() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="bg-transparent border-none outline-none flex-1 text-[#33ff00] caret-[#33ff00]"
+              className="bg-transparent border-none outline-none flex-1 text-green-terminal caret-green-terminal"
               autoComplete="off"
               spellCheck={false}
             />
